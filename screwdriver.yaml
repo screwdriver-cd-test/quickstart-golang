@@ -1,0 +1,41 @@
+---
+# Shared definition block
+# This is where you would define any attributes that all your jobs will 
+# inherit. In our example, we state that all our Jobs will use the same Docker
+# container for building in, as well as have a common environment variable set
+shared:
+  # Docker image to use as the desired build container. This typically takes the
+  # form of "repo_name". Alternatively, you can define the image as 
+  # "repo_name:tag_label"
+  # Docker image reference - https://hub.docker.com/_/golang/
+  image: golang
+  # A map of environment variables that we want to set
+  environment:
+    # We set the GOPATH to the build workspace. Eventually, this will be
+    # accessible by another environment variable that we can reference instead
+    # of hard-coding it here
+    GOPATH: /sd/workspace
+
+# Jobs definition block
+# All pipelines have "main" by default, and is implicitly defined.
+jobs:
+  # We explicitly define "main" in our configuration so that it does what we 
+  # want it to do.
+  main:
+    # Steps is the ordered list of commands to execute.
+    # Each step takes the form "step_name: command_to_run". The "step_name" is a
+    # convient label to reference it by. The "command_to_run" is the single 
+    # command that is executed during the step.
+    steps:
+      # Go commands document - https://golang.org/cmd/go/
+      
+      # This step downloads and installs packages and dependencies
+      - get: go get -t ./...
+      # The "vet" step runs the go tool vet on packages
+      - vet: go vet ./...
+      # This step runs gofmt on package resources
+      - gofmt: "find . -name '*.go' | xargs gofmt -s -w"
+      # The "test" step tests the packages
+      - test: go test ./...
+      # Compiles the packages and dependencies
+      - build: go build -a -o launch
