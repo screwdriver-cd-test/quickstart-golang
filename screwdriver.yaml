@@ -22,6 +22,15 @@ jobs:
   # We explicitly define "main" in our configuration so that it does what we 
   # want it to do.
   main:
+    # A single job name or array of jobs that will trigger the job to run.
+    # Jobs defined with "requires: ~pr" are started by pull-request events. 
+    # Jobs defined with "requires: ~commit" are started by push events. 
+    # Jobs defined with "requires: ~sd@123:main" are started by job "main" from pipeline "123". 
+    # Jobs defined with "requires: deploy-west" are started after "deploy-west" is done. 
+    # Jobs defined with "requires: [deploy-west, deploy-east] are started after "deploy-west" and "deploy-east" are both done running successfully.
+    requires: 
+      - ~pr
+      - ~commit
     # Steps is the ordered list of commands to execute.
     # Each step takes the form "step_name: command_to_run". The "step_name" is a
     # convient label to reference it by. The "command_to_run" is the single 
