@@ -6,7 +6,7 @@ import (
 )
 
 func TestGreetings(t *testing.T) {
-    expected := "Hello, Go"
+	expected := "Hello, Go!"
 	result := greetings()
 
 	if !strings.EqualFold(result, expected) {
