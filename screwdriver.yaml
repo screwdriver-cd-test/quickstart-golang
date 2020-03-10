@@ -1,5 +1,5 @@
 ---
-# Shared definition block
+# Shared definition block 1
 # This is where you would define any attributes that all your jobs will 
 # inherit. In our example, we state that all our Jobs will use the same Docker
 # container for building in, as well as have a common environment variable set
